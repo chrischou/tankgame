@@ -17,11 +17,13 @@ public class GameClient extends JComponent {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setTitle("史上最無聊的坦克大戰");
+        frame.setIconImage(new ImageIcon("asserts/images/cool.png").getImage());
         GameClient client = new GameClient();
         client.repaint();
         frame.add(client);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
