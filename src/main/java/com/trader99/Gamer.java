@@ -1,7 +1,5 @@
 package com.trader99;
 
-import javax.crypto.spec.PSource;
-
 class GamePeople{
 //    直接設定一個個靜態的屬性，這邊就NEW自己，且靜態特性是不能被改變
     private static final GamePeople INSTANCE = new GamePeople();
