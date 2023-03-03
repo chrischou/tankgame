@@ -4,19 +4,32 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameClient extends JComponent {
 
     private Tank playerTank;
+    private List<Tank> enemyTanks;
+    private List<Wall> walls;
 
     public GameClient() {
         this.playerTank = new Tank(400, 100, Direction.DOWN);
         this.setPreferredSize(new Dimension(800, 600));
+        this.enemyTanks = new ArrayList<>(12);
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 3; i++) {
+                this.enemyTanks.add(new Tank(200 + j * 120, 400 + 40 * i, true,Direction.UP));
+            }
+        }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         playerTank.draw(g);
+        for (Tank tank : enemyTanks){
+            tank.draw(g);
+        }
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -43,7 +56,7 @@ public class GameClient extends JComponent {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        while(true){
+        while (true) {
             client.repaint();
             Thread.sleep(50);
         }
