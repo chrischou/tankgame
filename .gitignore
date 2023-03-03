@@ -6,3 +6,4 @@
 /target/classes/com/trader99/Main.class
 /target/maven-archiver/pom.properties
 /target/TankGame-1.0-SNAPSHOT.jar
+/target/*
