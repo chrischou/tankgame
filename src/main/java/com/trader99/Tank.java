@@ -1,6 +1,5 @@
 package com.trader99;
 
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,6 +99,8 @@ public class Tank {
     }
 
     void draw(Graphics g) {
+        int oldX = x;
+        int oldY = y;
         this.determineDirection();
         this.move();
 
@@ -108,7 +109,29 @@ public class Tank {
         if (y < 0) y = 0;
         else if (y > 600 - getImage().getHeight(null)) y = 600 - getImage().getHeight(null);
 
+        Rectangle rec = this.getRectangle();
+        for (Wall wall : GameClient.getInstance().getWalls()) {
+            if (rec.intersects(wall.getRectangle())) {
+                x = oldX;
+                y = oldY;
+                break;
+            }
+            for (Tank tank : GameClient.getInstance().getEnemyTanks()) {
+                if (rec.intersects(tank.getRectangle())) {
+                    x = oldX;
+                    y = oldY;
+                    break;
+                }
+            }
+
+
+        }
+
         g.drawImage(this.getImage(), this.x, this.y, null);
+    }
+
+    public Rectangle getRectangle() {
+        return new Rectangle(x, y, getImage().getWidth(null), getImage().getHeight(null));
     }
 
     private boolean up, down, left, right;
@@ -127,7 +150,17 @@ public class Tank {
             case KeyEvent.VK_RIGHT:
                 right = true;
                 break;
+            case KeyEvent.VK_CONTROL:
+                fire();
+                break;
         }
+    }
+
+    private void fire() {
+        Missile missile = new Missile(x + getImage().getWidth(null) / 2 - 6,
+                y + getImage().getHeight(null) / 2 -6, enemy, direction);
+
+        GameClient.getInstance().getMissiles().add(missile);
     }
 
     private void determineDirection() {

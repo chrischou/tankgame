@@ -10,14 +10,33 @@ import java.util.List;
 
 public class GameClient extends JComponent {
 
+    private static final GameClient INSTANCE = new GameClient();
+    public static GameClient getInstance(){
+        return INSTANCE;
+    }
+
     private Tank playerTank;
     private List<Tank> enemyTanks;
     private List<Wall> walls;
+    private List<Missile> missiles;
 
-    public GameClient() {
+    public List<Wall> getWalls() {
+        return walls;
+    }
+
+    public List<Tank> getEnemyTanks() {
+        return enemyTanks;
+    }
+
+    public List<Missile> getMissiles() {
+        return missiles;
+    }
+
+    private GameClient() {
         this.playerTank = new Tank(400, 100, Direction.DOWN);
         this.setPreferredSize(new Dimension(800, 600));
         this.enemyTanks = new ArrayList<>(12);
+        this.missiles = new ArrayList<>();
         this.walls = Arrays.asList(
                 new Wall(200, 140, true, 15),
                 new Wall(200, 540, true, 15),
@@ -43,13 +62,16 @@ public class GameClient extends JComponent {
         for (Wall wall : walls) {
             wall.draw(g);
         }
+        for(Missile missile : missiles) {
+            missile.draw(g);
+        }
     }
 
     public static void main(String[] args) throws InterruptedException {
         JFrame frame = new JFrame();
         frame.setTitle("史上最無聊的坦克大戰");
         frame.setIconImage(new ImageIcon("asserts/images/tank.png").getImage());
-        GameClient client = new GameClient();
+        final GameClient client = GameClient.getInstance();
         client.repaint();
         frame.add(client);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
