@@ -1,9 +1,11 @@
 package com.trader99;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class Tank {
     private int x;
@@ -161,6 +163,10 @@ public class Tank {
                 y + getImage().getHeight(null) / 2 -6, enemy, direction);
 
         GameClient.getInstance().getMissiles().add(missile);
+
+        Media sound = new Media(new File("asserts/audios/shoot.wav").toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 
     private void determineDirection() {

@@ -68,6 +68,7 @@ public class GameClient extends JComponent {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        com.sun.javafx.application.PlatformImpl.startup(()->{});
         JFrame frame = new JFrame();
         frame.setTitle("史上最無聊的坦克大戰");
         frame.setIconImage(new ImageIcon("asserts/images/tank.png").getImage());
