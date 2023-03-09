@@ -11,7 +11,8 @@ import java.util.List;
 public class GameClient extends JComponent {
 
     private static final GameClient INSTANCE = new GameClient();
-    public static GameClient getInstance(){
+
+    public static GameClient getInstance() {
         return INSTANCE;
     }
 
@@ -19,6 +20,18 @@ public class GameClient extends JComponent {
     private List<Tank> enemyTanks;
     private List<Wall> walls;
     private List<Missile> missiles;
+
+    public Tank getPlayerTank() {
+        return playerTank;
+    }
+
+    public void add(Missile missile) {
+        missiles.add(missile);
+    }
+
+    public void removeMissile(Missile missile) {
+        missiles.remove(missile);
+    }
 
     public List<Wall> getWalls() {
         return walls;
@@ -35,7 +48,6 @@ public class GameClient extends JComponent {
     private GameClient() {
         this.playerTank = new Tank(400, 100, Direction.DOWN);
         this.setPreferredSize(new Dimension(800, 600));
-        this.enemyTanks = new ArrayList<>(12);
         this.missiles = new ArrayList<>();
         this.walls = Arrays.asList(
                 new Wall(200, 140, true, 15),
@@ -43,6 +55,11 @@ public class GameClient extends JComponent {
                 new Wall(100, 80, false, 15),
                 new Wall(700, 80, false, 15)
         );
+        initEnemyTanks();
+    }
+
+    private void initEnemyTanks() {
+        this.enemyTanks = new ArrayList<>(12);
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 3; i++) {
                 this.enemyTanks.add(new Tank(200 + j * 120, 400 + 40 * i, true, Direction.UP));
@@ -56,19 +73,25 @@ public class GameClient extends JComponent {
         g.fillRect(0, 0, 800, 600);
 
         playerTank.draw(g);
+        enemyTanks.removeIf(t -> !t.isLive());
+        if(enemyTanks.isEmpty()){
+            initEnemyTanks();
+        }
         for (Tank tank : enemyTanks) {
             tank.draw(g);
         }
         for (Wall wall : walls) {
             wall.draw(g);
         }
-        for(Missile missile : missiles) {
+        missiles.removeIf(m->!m.isLive());
+        for (Missile missile : missiles) {
             missile.draw(g);
         }
     }
 
     public static void main(String[] args) throws InterruptedException {
-        com.sun.javafx.application.PlatformImpl.startup(()->{});
+        com.sun.javafx.application.PlatformImpl.startup(() -> {
+        });
         JFrame frame = new JFrame();
         frame.setTitle("史上最無聊的坦克大戰");
         frame.setIconImage(new ImageIcon("asserts/images/tank.png").getImage());
@@ -98,4 +121,6 @@ public class GameClient extends JComponent {
         }
 
     }
+
+
 }
